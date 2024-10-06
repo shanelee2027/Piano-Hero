@@ -100,13 +100,11 @@ public class PianoDisplay extends JPanel {
 		for(int i = 0; i < sv.tempoChanges.size(); i++) {
 			TempoChange tc = sv.tempoChanges.get(i);
 			if(tc.tick > pv.tick) break;
-			if(tc.tick <= pv.tick) {
-				sv.baseBPM = tc.bpm;
-				sv.bpm = (int) (sv.baseBPM * sv.tempoMultiplier * sv.globalTempoMultiplier / 100.0);
-				pv.mspt = 60000.0 / ((sv.bpm * 1.0) * (sv.ppq));
-				sv.tempoChanges.remove(i);
-				i--;
-			}
+			sv.baseBPM = tc.bpm;
+			sv.bpm = (int) (sv.baseBPM * sv.tempoMultiplier * sv.globalTempoMultiplier / 100.0);
+			pv.mspt = 60000.0 / ((sv.bpm * 1.0) * (sv.ppq));
+			sv.tempoChanges.remove(i);
+			i--;
 		}
 		
 		// white keys in song (but plays black notes)
@@ -272,6 +270,12 @@ public class PianoDisplay extends JPanel {
 				int i = pv.charToBlackKeyNumber.get(keyChar);
 				g2.fillRect(blackKeyXs[i], blackKeyYs[i], blackKeyWidths[i], blackKeyHeights[i]);
 			}
+		}
+		
+		// black key borders
+		g2.setColor(Color.BLACK);
+		for (int i = 0; i < 15; i++) {
+			g2.drawRect(blackKeyXs[i], blackKeyYs[i], blackKeyWidths[i], blackKeyHeights[i]);
 		}
 		
 		// white key text
